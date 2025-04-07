@@ -1,42 +1,58 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// عرض قائمة المنتجات (
-Route::get('/products', [ProductController::class, 'index'])->name('admin.index');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// عرض صفحة إضافة منتج جديد
-Route::get('/products/create', [ProductController::class, 'create'])->name('admin.create');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// تخزين المنتج الجديد
-Route::post('/products', [ProductController::class, 'store'])->name('admin.store');
-// صفحة التعديل
-Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.edit');
+require __DIR__.'/auth.php';
 
-// حفظ التعديلات
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.update');
+// عرض جميع المنتجات
+Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products.index');
 
-// حذف المنتج
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.destroy');
-///////////////////////
-// صفحة عرض الأصناف
-Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+// عرض صفحة إنشاء منتج جديد
+Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
 
-// صفحة إنشاء صنف جديد
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+// تخزين المنتج الجديد في قاعدة البيانات
+Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
 
-// حفظ الصنف الجديد
-Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+// عرض صفحة تعديل منتج معين
+Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
 
-// تعديل الصنف
-Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+// تحديث بيانات المنتج
+Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
 
-// تحديث الصنف بعد التعديل
-Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+// حذف منتج
+Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
-// حذف الصنف
-Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+// عرض جميع الأصناف
+Route::get('/admin/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
 
-Route::resource('categories', CategoryController::class);
+// عرض صفحة إنشاء صنف جديد
+Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+
+// تخزين الصنف الجديد
+Route::post('/admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+
+// عرض صفحة تعديل صنف معين
+Route::get('/admin/categories/{category}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+
+// تحديث بيانات الصنف
+Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+
+// حذف صنف
+Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');

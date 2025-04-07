@@ -3,7 +3,17 @@
 @section('content')
     <div class="container">
         <h2>قائمة المنتجات</h2>
+
+        <!-- عرض رسالة النجاح -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         
+        <!-- زر إضافة منتج جديد -->
+        <a href="{{ route('admin.products.create') }}" class="btn btn-success mb-3">إضافة منتج جديد</a>
+
         <!-- جدول عرض المنتجات -->
         <table class="table table-bordered">
             <thead>
@@ -24,9 +34,9 @@
                         <td>{{ $product->created_at->format('Y-m-d H:i') }}</td> <!-- عرض التاريخ -->
                         <td>
                             <!-- زر التعديل -->
-                            <a href="{{ route('admin.edit', $product->id) }}" class="btn btn-warning">تعديل</a>
+                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning">تعديل</a>
                             <!-- زر الحذف -->
-                            <form action="{{ route('admin.destroy', $product->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">حذف</button>

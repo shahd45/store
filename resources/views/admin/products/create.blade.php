@@ -4,8 +4,8 @@
     <div class="container">
         <h2>إنشاء منتج جديد</h2>
 
-        <form action="{{ route('admin.store') }}" method="POST">
-            @csrf
+        <form action="{{ route('admin.products.store') }}" method="POST">
+        @csrf
             <!-- اسم المنتج -->
             <div class="form-group">
                 <label for="name">اسم المنتج</label>

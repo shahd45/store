@@ -2,13 +2,13 @@
 
 @section('content')
 
-<form action="{{ route('admin.update', $product->id) }}" method="POST">
+<form action="{{ route('admin.products.update', $product->id) }}" method="POST">
     @csrf
     @method('PUT')
 
     <div class="container">
     <h2>تعديل المنتج</h2>
-    <form action="{{ route('admin.update', $product->id) }}" method="POST">
+    <form action="{{ route('admin.products.update', $product->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -43,7 +43,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-        <a href="{{ route('admin.index') }}" class="btn btn-secondary">إلغاء</a>
+        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">إلغاء</a>
     </form>
 </div></form>
 
